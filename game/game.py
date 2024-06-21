@@ -1,5 +1,6 @@
 from game.scenes.menu.menu import MenuScene
 from game.scenes.play.play import PlayScene
+from game.scenes.gameover.over import GameOverScene
 from threading import Lock
 
 class Game:
@@ -43,9 +44,14 @@ class Game:
         with self.lock:
             if type == 'STARTGAME':
                 self.scene = PlayScene(self)
+            if type == 'GAMEOVER':
+                self.scene = GameOverScene(self)
 
     def isMenu(self):
         return isinstance(self.scene, MenuScene)
 
     def isPlay(self):
         return isinstance(self.scene, PlayScene)
+    
+    def isOver(self):
+        return isinstance(self.scene, GameOverScene)

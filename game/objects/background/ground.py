@@ -6,10 +6,11 @@ class Ground(GameObject):
 
 
     def update(self):
-        if self.x <= -800:
-            self.x = 0
+        if not self.scene.game.isOver():
+            if self.x <= -800:
+                self.x = 0
 
-        self.x -= 10
+            self.x -= 10
 
     def render(self):
         self.scene.game.screen.blit(self.image, (self.x, self.y))

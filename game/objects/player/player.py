@@ -22,47 +22,47 @@ class Player(GameObject):
 #work on logic
     def update(self):
         pgImage = self.scene.game.pygame.image
+        if not self.scene.game.isOver():
+            if self.isSliding:
+                ground = 350
+                self.scene.gravity *= 1.25
+            else: 
+                ground = 320
+                self.scene.gravity = self.scene.initGravity
 
-        if self.isSliding:
-            ground = 350
-            self.scene.gravity *= 1.25
-        else: 
-            ground = 320
-            self.scene.gravity = self.scene.initGravity
+            if self.jumpCount > 0 and self.jumpCount <= 2:
+                self.rect.y -= self.jumpSpeed
+                self.jumpSpeed -= self.scene.gravity
 
-        if self.jumpCount > 0 and self.jumpCount <= 2:
-            self.rect.y -= self.jumpSpeed
-            self.jumpSpeed -= self.scene.gravity
-
-        if self.rect.y < ground:
-            self.rect.y += self.scene.gravity
+            if self.rect.y < ground:
+                self.rect.y += self.scene.gravity
+                if self.rect.y > ground:
+                    self.rect.y = ground
+                    self.jumpCount = 0
+                    self.jumpSpeed = self.initJumpSpeed
+                
             if self.rect.y > ground:
-                self.rect.y = ground
-                self.jumpCount = 0
-                self.jumpSpeed = self.initJumpSpeed
+                    self.rect.y = ground
+                    self.jumpCount = 0
+                    self.jumpSpeed = self.initJumpSpeed
+
+            if self.jumpSpeed < 0 and not self.isSliding:
+                    self.image = pgImage.load('assets/player_fall.png').convert_alpha()
+
+
+            self.score += 0.1
+
+            if self.delayDoubleJump != 0 and self.jumpCount == 2:
+                self.delayDoubleJump -= 1
+                if self.delayDoubleJump == 0:
+                    self.image = pgImage.load('assets/player_jump.png').convert_alpha()
             
-        if self.rect.y > ground:
-                self.rect.y = ground
-                self.jumpCount = 0
-                self.jumpSpeed = self.initJumpSpeed
-
-        if self.jumpSpeed < 0 and not self.isSliding:
-                self.image = pgImage.load('assets/player_fall.png').convert_alpha()
-
-
-        self.score += 0.1
-
-        if self.delayDoubleJump != 0 and self.jumpCount == 2:
-            self.delayDoubleJump -= 1
-            if self.delayDoubleJump == 0:
-                self.image = pgImage.load('assets/player_jump.png').convert_alpha()
-        
-        if (not self.isSliding and self.jumpCount == 0) and not self.pressed:
-            self.delayRun -= 1
-            if self.delayRun == 0:
-                self.image = pgImage.load('assets/player_walk_' + str((self.runIndex % 4) + 1) + '.png').convert_alpha()
-                self.runIndex += 1
-                self.delayRun = 6
+            if (not self.isSliding and self.jumpCount == 0) and not self.pressed:
+                self.delayRun -= 1
+                if self.delayRun == 0:
+                    self.image = pgImage.load('assets/player_walk_' + str((self.runIndex % 4) + 1) + '.png').convert_alpha()
+                    self.runIndex += 1
+                    self.delayRun = 6
 
     
     def handleEvents(self, events):
