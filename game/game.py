@@ -16,7 +16,7 @@ class Game:
         self.scoreFont = self.pygame.font.Font('assets/Pixeltype.ttf', 50)
         self.gameFont = self.pygame.font.Font('assets/Pixeltype.ttf', 80)
 
-        #moving objects
+        # moving objects
         self.entities = dict()
 
         self.scene = MenuScene(self)
@@ -24,6 +24,14 @@ class Game:
     def run(self):
         while self.running:
             events = self.pygame.event.get()
+            for event in events:
+                if event.type == self.pygame.QUIT:
+                    self.running = False
+                    break  # Exit the event loop
+
+            if not self.running:
+                break  # Exit the game loop
+
             self.scene.handleEvents(events)
             self.scene.update()
             self.scene.render()
@@ -41,7 +49,7 @@ class Game:
 
     def isMenu(self):
         return isinstance(self.scene, MenuScene)
-    
+
     def isPlay(self):
         return isinstance(self.scene, PlayScene)
     
