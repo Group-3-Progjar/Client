@@ -89,7 +89,7 @@ class Game:
             if type == 'OTP':
                 self.scene = OtpScene(self)
 
-    def quit(self):
+    def quit(self, args):
         self.running = False
 
     def isMenu(self):
