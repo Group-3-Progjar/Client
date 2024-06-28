@@ -1,3 +1,6 @@
+from game.objects.background.clouds import Clouds
+from game.objects.background.ground import Ground
+from game.objects.player.player import Player
 from game.scenes.scene import Scene
 from game.objects.obstacles.obstacle import Obstacles, Obstacle
 from game.objects.ui.text import GameText
@@ -21,6 +24,9 @@ class PlayScene(Scene):
         super().removeEntity('over_score')
         super().removeEntity('text_desc')
         super().removeEntity('start_button')
+        super().addEntity('clouds', Clouds(self))
+        super().addEntity('player_you', Player(self, 'assets/player_walk_1.png', 50 , 320))
+        super().addEntity('ground', Ground(self,0))
 
 
         # You can reorder the entities using reorderEntity()

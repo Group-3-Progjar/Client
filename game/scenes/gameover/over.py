@@ -10,9 +10,7 @@ class GameOverScene(Scene):
         ]
         super().__init__(game, images)
 
-        super().addEntity('text_restart', GameText(self, 'Click to Restart', 400, 250))
-        super().addEntity('text_over', GameText(self, 'Game Over', 400, 50))
-        super().addEntity('over_score', GameText(self, f"Score :{str(int(self.game.entities['player_you'].score))}", 400, 100))
-        super().addEntity('start_button', Button(self, 'assets/play_btn.png', 400, 180, self.game.changeScene, 'STARTGAME'))
-
-        
+        # super().addEntity('over_text_restart', GameText(self, 'Click to Restart', 400, 250))
+        super().addEntity('over_text_over', GameText(self, 'Game Over', 400, 150))
+        super().addEntity('over_over_score', GameText(self, f"Score :{str(int(self.game.entities['player_you'].score))}", 400, 200))
+        super().addEntity('over_start_button', Button(self, 'assets/btn_menu.png', 400, 280, self.game.changeScene, 'MENU'))        

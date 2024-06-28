@@ -26,6 +26,9 @@ class Scene:
         else:
             print(f"Entity '{name}' does not exist and cannot be removed.")
 
+    def removeAllEntities(self):
+        self.game.entities = {}
+
     def update(self):
         for name, entity in list(self.game.entities.items()):
             entity.update()
