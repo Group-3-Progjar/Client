@@ -30,11 +30,12 @@ class GameClient:
                     continue
                 command, json_data = data.split(';', 1)
                 payload = json.loads(json_data)
+                print(payload)
                 if command in self.callbacks:
                     self.callbacks[command](payload)
             except Exception as e:
                 print(f"Error: {e}")
-                self.connected = False
+                #self.connected = False
 
     def register_callback(self, command, callback):
         self.callbacks[command] = callback
