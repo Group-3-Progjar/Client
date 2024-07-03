@@ -47,7 +47,7 @@ class Player(GameObject):
                     self.jumpSpeed = self.initJumpSpeed
 
             if self.jumpSpeed < 0 and not self.isSliding:
-                    self.image = pgImage.load('assets/player_fall.png').convert_alpha()
+                    self.image = pgImage.load('assets/Penguin_fall.png').convert_alpha()
 
 
             self.score += 0.1
@@ -55,12 +55,12 @@ class Player(GameObject):
             if self.delayDoubleJump != 0 and self.jumpCount == 2:
                 self.delayDoubleJump -= 1
                 if self.delayDoubleJump == 0:
-                    self.image = pgImage.load('assets/player_jump.png').convert_alpha()
+                    self.image = pgImage.load('assets/Penguin_jump.png').convert_alpha()
             
             if (not self.isSliding and self.jumpCount == 0) and not self.pressed:
                 self.delayRun -= 1
                 if self.delayRun == 0:
-                    self.image = pgImage.load('assets/player_walk_' + str((self.runIndex % 4) + 1) + '.png').convert_alpha()
+                    self.image = pgImage.load('assets/Penguin' + str((self.runIndex % 4) + 1) + '.png').convert_alpha()
                     self.runIndex += 1
                     self.delayRun = 6
 
@@ -80,7 +80,7 @@ class Player(GameObject):
                                 self.delayDoubleJump = 50
                                 self.image = pg.image.load('assets/player_double_jump.png').convert_alpha()
                             else:
-                                self.image = pg.image.load('assets/player_jump.png').convert_alpha()
+                                self.image = pg.image.load('assets/Penguin_jump.png').convert_alpha()
 
                     elif event.key == pg.K_DOWN:
                         self.isSliding = True
@@ -90,7 +90,7 @@ class Player(GameObject):
                 
                 elif event.type == pg.KEYUP:
                     if self.isSliding:
-                        self.image = pg.image.load('assets/player_walk_1.png').convert_alpha()
+                        self.image = pg.image.load('assets/Penguin1.png').convert_alpha()
                         self.rect = self.image.get_rect(topleft=(50, 350 if self.jumpCount == 0 else self.rect.y))
                         self.isSliding = False
 
