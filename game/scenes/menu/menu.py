@@ -21,7 +21,8 @@ class MenuScene(Scene):
         super().addEntity('ground', Ground(self,0))
         super().addEntity('text_name', GameText(self, 'Penguin Runner', 400, 50))
         super().addEntity('text_desc', GameText(self, 'Group 3', 400, 100))
-        super().addEntity('start_button', Button(self, 'assets/btn_create_room.png', 400, 150, self.game.changeScene, 'CREATE_ROOM'))
-        super().addEntity('start_button2', Button(self, 'assets/btn_online_rooms.png', 400, 220, self.game.changeScene, 'STARTGAME'))
-        super().addEntity('start_button3', Button(self, 'assets/btn_change_skin.png', 400, 290, self.game.changeScene, 'STARTGAME'))
+        super().addEntity('start_button3', Button(self, 'assets/btn_startgame.png', 400, 150, self.game.changeScene, 'CREATE_ROOM'))
+        super().addEntity('start_button2', Button(self, 'assets/btn_leaderboard.png', 400, 220, self.game.changeScene, 'STARTGAME'))
         super().addEntity('start_button4', Button(self, 'assets/btn_quit.png', 400, 360, self.game.quit, 'STARTGAME'))
+
+        #create_room for map selection
