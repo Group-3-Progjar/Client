@@ -24,7 +24,8 @@ class Scene:
         if name in self.game.entities:
             del self.game.entities[name]
         else:
-            print(f"Entity '{name}' does not exist and cannot be removed.")
+            pass
+            #print(f"Entity '{name}' does not exist and cannot be removed.")
 
     def removeAllEntities(self):
         self.game.entities = {}
