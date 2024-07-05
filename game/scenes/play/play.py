@@ -28,7 +28,6 @@ class PlayScene(Scene):
         super().addEntity('player_you', Player(self, 'assets/player_walk_1.png', 50 , 320))
         super().addEntity('ground', Ground(self,0))
 
-
         # You can reorder the entities using reorderEntity()
         # example :
         # super().reorderEntity(['player_you', 'clouds', 'ground'])

@@ -1,14 +1,16 @@
 from game.objects.ui.text import GameText
-from game.scenes.create_room.create_room import CreateRoomScene
-from game.scenes.login.login import LoginScene
+from game.scenes.menu.create_room import CreateRoomScene
+from game.scenes.auth.login import LoginScene
 from game.scenes.menu.menu import MenuScene
-from game.scenes.otp.otp import OtpScene
+from game.scenes.auth.otp import OtpScene
 from game.scenes.play.play import PlayScene
-from game.scenes.gameover.over import GameOverScene
+from game.scenes.play.over import GameOverScene
 from game.scenes.chat.chat import ChatScene
-from game.scenes.register.register import RegisterScene
+from game.scenes.auth.register import RegisterScene
 from threading import Lock
 from game.game_client import GameClient  # Assuming the client class is saved in client.py
+from game.scenes.menu.leaderboard import LeaderboardScene
+
 
 class Game:
     def __init__(self, pygame, screen):
@@ -27,6 +29,7 @@ class Game:
         self.chat_active = False
         self.entities = dict()
         self.username = "guest"
+        self.leaderboardid = -1
 
 
         # Initialize and connect the client
@@ -88,6 +91,8 @@ class Game:
                 self.scene = LoginScene(self, self.client)
             if type == 'OTP':
                 self.scene = OtpScene(self)
+            if type == 'LEADERBOARD':
+                self.scene = LeaderboardScene(self)
 
     def quit(self, args):
         self.running = False
@@ -104,6 +109,9 @@ class Game:
     def handle_general_response(self, payload):
         print(f"Command Response: {payload}")
         self.scene.addEntity('server_response', GameText(self.scene, payload["message"], 400, 450))
+        if payload['leaderboard_id']:
+            self.leaderboardid = payload['leaderboard_id']
+            print(self.leaderboardid)
 
     def handle_receive_chat(self, payload):
         print(f"Receive Chat: {payload}")

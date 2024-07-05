@@ -22,21 +22,22 @@ class CreateRoomScene(Scene):
             ['assets/sun.png', (600, 20)]
         ]
         super().__init__(game, images)
-        self.game_client.register_callback("CREATE_ROOM", self.createRoomCallback)
+        #self.game_client.register_callback("CREATE_ROOM", self.createRoomCallback)
 
         #the entity who gets added first will be rendered first
         super().addEntity('cr_clouds', Clouds(self))
         super().addEntity('cr_player_you', Player(self, 'assets/player_walk_1.png', 50 , 320))
         super().addEntity('cr_ground', Ground(self,0))
-        super().addEntity('cr_text_name', GameText(self, 'Choose Map', 400, 50))
-        super().addEntity('cr_map_1', Button(self, 'assets/map_ice.png', 180, 100, self.chooseMap, 1))
-        super().addEntity('cr_map_2', Button(self, 'assets/map_dirt.png', 400, 100, self.chooseMap, 2))
-        super().addEntity('cr_map_3', Button(self, 'assets/map_green.png', 620, 100, self.chooseMap, 3))
+        super().addEntity('cr_text_name', GameText(self, 'Choose Map', 400, 100))
+        super().addEntity('cr_map_1', Button(self, 'assets/map_ice.png', 180, 175, self.chooseMap, 1))
+        super().addEntity('cr_map_2', Button(self, 'assets/map_dirt.png', 400, 175, self.chooseMap, 2))
+        super().addEntity('cr_map_3', Button(self, 'assets/map_green.png', 620, 175, self.chooseMap, 3))
         super().addEntity('cr_text_players2', GameText(self, f'Map: {list_maps[chosen_map]}', 120, 10))
-        super().addEntity('cr_p2', Button(self, 'assets/btn_2p.png', 180, 280, self.choosePlayers, 2))
-        super().addEntity('cr_p3', Button(self, 'assets/btn_3p.png', 400, 280, self.choosePlayers, 3))
-        super().addEntity('cr_p4', Button(self, 'assets/btn_4p.png', 620, 280, self.choosePlayers, 4))
-        super().addEntity('cr_start_button4', Button(self, 'assets/btn_confirm.png', 400, 360, self.createRoom))
+        super().addEntity('cr_start_button4', Button(self, 'assets/btn_confirm.png', 400, 360, self.game.changeScene, 'STARTGAME'))
+
+        self.game.client.send_request('START_GAME', {"username":self.game.username})
+
+
         
     def chooseMap(self, map_id):
         global chosen_map
@@ -54,3 +55,4 @@ class CreateRoomScene(Scene):
     def createRoomCallback(self, data):
         if data["success"]:
             self.game.waitingRoom(data["room_id"])
+            print('text')
