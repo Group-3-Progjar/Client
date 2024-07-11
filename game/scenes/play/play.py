@@ -36,7 +36,7 @@ class PlayScene(Scene):
 
         #add entities
         super().addEntity('obstacles', Obstacles([
-            Obstacle(self, 'assets/obs_tall.png', 1300, 250),
+            Obstacle(self, 'assets/obstacle_tall.png', 1300, 250),
             Obstacle(self, 'assets/small_obs.png', 800, 350),
             Obstacle(self, 'assets/obs_fly.png', 2500, 230)
         ]))
@@ -58,7 +58,7 @@ class PlayScene(Scene):
 
     def playerCollide(self, args):
         player = self.game.entities['player_you']
-        player.image = self.game.pygame.image.load('assets/player_over.png').convert_alpha()
+        player.image = self.game.pygame.image.load('assets/Penguin_over.png').convert_alpha()
         player.isSliding = False
         player.jumpCount = 0
         super().removeEntity('score_text')

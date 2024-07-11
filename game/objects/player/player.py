@@ -78,7 +78,7 @@ class Player(GameObject):
 
                             if self.jumpCount == 2:
                                 self.delayDoubleJump = 50
-                                self.image = pg.image.load('assets/player_double_jump.png').convert_alpha()
+                                self.image = pg.image.load('assets/Penguin_double_jump.png').convert_alpha()
                             else:
                                 self.image = pg.image.load('assets/Penguin_jump.png').convert_alpha()
 
@@ -98,7 +98,7 @@ class Player(GameObject):
                 if event.type == pg.MOUSEBUTTONDOWN:
                     if self.rect.collidepoint(event.pos):
                         self.pressed = True
-                        self.image = pg.image.load('assets/player_over.png').convert_alpha()
+                        self.image = pg.image.load('assets/Penguin_over.png').convert_alpha()
                 
                 elif event.type == pg.MOUSEBUTTONUP:
                     self.pressed = False
