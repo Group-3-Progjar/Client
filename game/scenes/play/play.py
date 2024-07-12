@@ -82,7 +82,10 @@ class PlayScene(Scene):
 
     def playerCollide(self, args):
         player = self.game.entities['player_you']
-        player.image = self.game.pygame.image.load('assets/player_over.png').convert_alpha()
+        if self.game.skin_id == 1:
+            player.image = self.game.pygame.image.load('assets/player_over.png').convert_alpha()
+        else:
+            player.image = self.game.pygame.image.load('assets/player_over_2.png').convert_alpha()
         player.isSliding = False
         player.jumpCount = 0
         super().removeEntity('score_text')
