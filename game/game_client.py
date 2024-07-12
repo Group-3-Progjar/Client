@@ -22,23 +22,44 @@ class GameClient:
         with self.lock:
             self.socket.sendall(message.encode('utf-8'))
 
+
+
     def listen_for_messages(self):
         while self.connected:
             try:
-                data = self.socket.recv(1024).decode('utf-8')
+                data = self.socket.recv(1024).decode('utf-8').strip()  # Strip whitespace/newlines
                 if not data:
                     continue
-                command, json_data = data.split(';', 1)
-                payload = json.loads(json_data)
-                print(payload)
+
+                print("Received data:", repr(data))  # Use repr to see all characters, including whitespace
+
+                try:
+                    command, json_data = data.split(';', 1)
+                except ValueError as ve:
+                    print(f"Error splitting data: {ve}")
+                    continue  # Skip this iteration if split fails
+
+                # Remove leading and trailing whitespace or extraneous characters
+                # json_data = json_data[:-1].strip()
+
+                try:
+                    payload = json.loads(json_data)
+                except json.JSONDecodeError as je:
+                    print(f"Error decoding JSON: {je}")
+                    continue  # Skip this iteration if JSON decoding fails
+
                 if command in self.callbacks:
                     self.callbacks[command](payload)
             except Exception as e:
                 print(f"Error: {e}")
-                #self.connected = False
+                # self.connected = False
 
     def register_callback(self, command, callback):
         self.callbacks[command] = callback
+
+    def unregister_callback(self, command):
+        if command in self.callbacks:
+            del self.callbacks[command]
 
     def close(self):
         self.connected = False

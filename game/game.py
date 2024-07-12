@@ -1,4 +1,5 @@
 from game.objects.ui.text import GameText
+from game.scenes.menu.changeskin import ChangeSkinScene
 from game.scenes.menu.create_room import CreateRoomScene
 from game.scenes.auth.login import LoginScene
 from game.scenes.menu.menu import MenuScene
@@ -29,8 +30,9 @@ class Game:
         self.chat_active = False
         self.entities = dict()
         self.username = "guest"
-        self.leaderboardid = -1
-
+        self.leaderboard_id = -1
+        self.skin_id = 1
+        self.skin_id_observers = []
 
         # Initialize and connect the client
         self.client = GameClient()
@@ -43,6 +45,7 @@ class Game:
         self.client.register_callback('RESPONSE', self.handle_general_response)
         self.client.register_callback('ROOM', self.handle_room)
         self.client.register_callback('CLOSED_ROOM', self.handle_closed_room)
+        self.client.register_callback('SKIN_ID', self.handle_skin_id_response)
 
     def run(self):
         while self.running:
@@ -78,13 +81,13 @@ class Game:
             if type == 'MENU':
                 self.scene = MenuScene(self)
             if type == 'STARTGAME':
-                self.scene = PlayScene(self)
+                self.scene = PlayScene(self, self.client)
             if type == 'CREATE_ROOM':
                 self.scene = CreateRoomScene(self, self.client)
             if type == 'LIST_ROOM':
                 self.scene = ChatScene(self)
             if type == 'CHANGE_SKIN':
-                self.scene = PlayScene(self)
+                self.scene = ChangeSkinScene(self, self.client)
             if type == 'REGISTER':
                 self.scene = RegisterScene(self)
             if type == 'LOGIN':
@@ -92,7 +95,7 @@ class Game:
             if type == 'OTP':
                 self.scene = OtpScene(self)
             if type == 'LEADERBOARD':
-                self.scene = LeaderboardScene(self)
+                self.scene = LeaderboardScene(self, self.client)
 
     def quit(self, args):
         self.running = False
@@ -121,3 +124,24 @@ class Game:
 
     def handle_closed_room(self, payload):
         print(f"Closed Room: {payload}")
+
+    def handle_skin_id_response(self, payload):
+        print(f"Skin ID Response: {payload}")
+        if 'skin_id' in payload:
+            self.set_skin_id(payload['skin_id'])
+
+    def set_skin_id(self, skin_id):
+            self.skin_id = skin_id
+            print(f"Skin ID set to: {self.skin_id}")
+            self.notify_skin_id_observers()
+
+    def add_skin_id_observer(self, observer):
+            self.skin_id_observers.append(observer)
+
+    def remove_skin_id_observer(self, observer):
+        with self.lock:
+            self.skin_id_observers.remove(observer)
+
+    def notify_skin_id_observers(self):
+        for observer in self.skin_id_observers:
+            observer(self.skin_id)

@@ -1,11 +1,13 @@
 from game.objects.gameobject import GameObject
 
 class Player(GameObject):
-    def __init__(self, scene, image, x, y):
+    def __init__(self, scene, image, x, y, game):
         super().__init__(scene, image, x, y)
         
         self.score = 0
         self.isSliding = False
+        self.game = game
+        self.game.add_skin_id_observer(self.on_skin_id_change)
 
         #default x, y is (50, 320)
         self.rect = self.image.get_rect(topleft=(self.x, self.y))
@@ -18,6 +20,16 @@ class Player(GameObject):
         self.runIndex = 0
 
         self.pressed = False
+        self.penguin_asset = ''
+        self.on_skin_id_change(self.game.skin_id)
+
+
+    def on_skin_id_change(self, skin_id):
+        if skin_id == 1:
+            self.penguin_asset = ''
+        elif skin_id == 2:
+            self.penguin_asset = '_2'
+
 
 #work on logic
     def update(self):
@@ -47,7 +59,7 @@ class Player(GameObject):
                     self.jumpSpeed = self.initJumpSpeed
 
             if self.jumpSpeed < 0 and not self.isSliding:
-                    self.image = pgImage.load('assets/Penguin_fall.png').convert_alpha()
+                    self.image = pgImage.load('assets/player_jump' + self.penguin_asset + '.png').convert_alpha()
 
 
             self.score += 0.1
@@ -55,12 +67,12 @@ class Player(GameObject):
             if self.delayDoubleJump != 0 and self.jumpCount == 2:
                 self.delayDoubleJump -= 1
                 if self.delayDoubleJump == 0:
-                    self.image = pgImage.load('assets/Penguin_jump.png').convert_alpha()
+                    self.image = pgImage.load('assets/player_jump' + self.penguin_asset + '.png').convert_alpha()
             
             if (not self.isSliding and self.jumpCount == 0) and not self.pressed:
                 self.delayRun -= 1
                 if self.delayRun == 0:
-                    self.image = pgImage.load('assets/Penguin' + str((self.runIndex % 4) + 1) + '.png').convert_alpha()
+                    self.image = pgImage.load('assets/player_walk_' + str((self.runIndex % 4) + 1) + self.penguin_asset + '.png').convert_alpha()
                     self.runIndex += 1
                     self.delayRun = 6
 
@@ -78,19 +90,19 @@ class Player(GameObject):
 
                             if self.jumpCount == 2:
                                 self.delayDoubleJump = 50
-                                self.image = pg.image.load('assets/player_double_jump.png').convert_alpha()
+                                self.image = pg.image.load('assets/player_double_jump' + self.penguin_asset + '.png').convert_alpha()
                             else:
-                                self.image = pg.image.load('assets/Penguin_jump.png').convert_alpha()
+                                self.image = pg.image.load('assets/player_jump' + self.penguin_asset + '.png').convert_alpha()
 
                     elif event.key == pg.K_DOWN:
                         self.isSliding = True
-                        self.image = pg.image.load('assets/player_slide.png').convert_alpha()
+                        self.image = pg.image.load('assets/player_slide' + self.penguin_asset + '.png').convert_alpha()
                         self.rect = self.image.get_rect(topleft=(50, 350 if self.jumpCount == 0 else self.rect.y))
 
                 
                 elif event.type == pg.KEYUP:
                     if self.isSliding:
-                        self.image = pg.image.load('assets/Penguin1.png').convert_alpha()
+                        self.image = pg.image.load('assets/player_walk_1' + self.penguin_asset + '.png').convert_alpha()
                         self.rect = self.image.get_rect(topleft=(50, 350 if self.jumpCount == 0 else self.rect.y))
                         self.isSliding = False
 
@@ -98,7 +110,7 @@ class Player(GameObject):
                 if event.type == pg.MOUSEBUTTONDOWN:
                     if self.rect.collidepoint(event.pos):
                         self.pressed = True
-                        self.image = pg.image.load('assets/player_over.png').convert_alpha()
+                        self.image = pg.image.load('assets/player_over' + self.penguin_asset + '.png').convert_alpha()
                 
                 elif event.type == pg.MOUSEBUTTONUP:
                     self.pressed = False

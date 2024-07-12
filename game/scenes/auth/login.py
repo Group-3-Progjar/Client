@@ -30,7 +30,7 @@ class LoginScene(Scene):
 
         #the entity who gets added first will be rendered first
         super().addEntity('clouds', Clouds(self))
-        super().addEntity('player_you', Player(self, 'assets/player_walk_1.png', 50 , 320))
+        super().addEntity('player_you', Player(self, 'assets/player_walk_1.png', 50 , 320, game))
         super().addEntity('ground', Ground(self,0))
         super().addEntity('text_name', GameText(self, 'Penguin Runner', 400, 50))
         super().addEntity('text_desc', GameText(self, 'Login', 400, 100))
@@ -45,4 +45,5 @@ class LoginScene(Scene):
     def loginCallback(self, data):
         if data["success"]:
             self.game.username = username
+            self.game.skin_id = data["message"]["skin_id"]
             self.game.changeScene('MENU')

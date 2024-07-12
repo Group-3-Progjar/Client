@@ -33,7 +33,7 @@ class RegisterScene(Scene):
 
         #the entity who gets added first will be rendered first
         super().addEntity('register_clouds', Clouds(self))
-        super().addEntity('register_player_you', Player(self, 'assets/player_walk_1.png', 50 , 320))
+        super().addEntity('register_player_you', Player(self, 'assets/player_walk_1.png', 50 , 320, game))
         super().addEntity('register_ground', Ground(self,0))
         super().addEntity('register_text_name', GameText(self, 'Penguin Runner', 400, 50))
         super().addEntity('register_text_desc', GameText(self, 'Register', 400, 100))
